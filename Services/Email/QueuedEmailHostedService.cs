@@ -24,6 +24,11 @@ public class QueuedEmailHostedService : BackgroundService
             {
                 var message = await _emailQueue.DequeueAsync(stoppingToken);
 
+                _logger.LogInformation(
+                    "Dequeued e-mail for {Recipient} with subject {Subject}.",
+                    message.To,
+                    message.Subject);
+
                 using var scope = _serviceProvider.CreateScope();
                 var sender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
                 await sender.SendAsync(message, stoppingToken);

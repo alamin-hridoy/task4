@@ -13,8 +13,25 @@ ASP.NET Core MVC user management app for Itransition Task 4.
 
 ## Local Run
 
-1. Update `appsettings.json` with a working PostgreSQL connection string and SMTP settings.
-2. Run:
+1. Put your local secrets in `appsettings.Development.json` or environment variables.
+2. Example `appsettings.Development.json`:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5435;Database=task4db;Username=postgres;Password=YOUR_DB_PASSWORD"
+  },
+  "Resend": {
+    "ApiKey": "YOUR_RESEND_API_KEY",
+    "FromName": "Task4 App",
+    "FromEmail": "YOUR_VERIFIED_SENDER_EMAIL"
+  }
+}
+```
+
+3. `appsettings.Development.json` is already gitignored, so your secrets stay local.
+4. Resend requires a sender address your account can use. For broader delivery, verify your own domain in Resend and use that address as `FromEmail`.
+5. Run:
 
 ```bash
 dotnet build
@@ -31,16 +48,18 @@ This repo includes:
 Set these Render environment variables:
 
 - `ConnectionStrings__DefaultConnection`
-- `Smtp__User`
-- `Smtp__Password`
-- `Smtp__FromEmail`
+- `Resend__ApiKey`
+- `Resend__FromEmail`
 
 Optional/defaulted in `render.yaml`:
 
 - `ASPNETCORE_ENVIRONMENT=Production`
-- `Smtp__Host=smtp.gmail.com`
-- `Smtp__Port=587`
-- `Smtp__FromName=Task4 App`
+- `Resend__FromName=Task4 App`
+
+Notes:
+
+- Render free services block outbound SMTP ports, so production e-mail uses the Resend HTTPS API instead of SMTP.
+- `Resend__FromEmail` must be a sender address Resend accepts for your account. For non-test sending, verify your domain in Resend first.
 
 ## Submission Notes
 

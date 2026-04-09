@@ -9,15 +9,9 @@ services:
         value: Production
       - key: ConnectionStrings__DefaultConnection
         sync: false
-      - key: Smtp__Host
-        value: smtp.gmail.com
-      - key: Smtp__Port
-        value: "587"
-      - key: Smtp__User
+      - key: Resend__ApiKey
         sync: false
-      - key: Smtp__Password
-        sync: false
-      - key: Smtp__FromName
+      - key: Resend__FromName
         value: Task4 App
-      - key: Smtp__FromEmail
+      - key: Resend__FromEmail
         sync: false

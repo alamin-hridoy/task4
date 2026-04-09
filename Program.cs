@@ -39,7 +39,10 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<IPasswordHasher<AppUser>, PasswordHasher<AppUser>>();
 builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
-builder.Services.AddTransient<IEmailSender, MailKitEmailSender>();
+builder.Services.AddHttpClient<IEmailSender, ResendEmailSender>(client =>
+{
+    client.BaseAddress = new Uri("https://api.resend.com/");
+});
 builder.Services.AddHostedService<QueuedEmailHostedService>();
 
 var app = builder.Build();

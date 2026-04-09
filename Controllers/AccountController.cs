@@ -17,15 +17,18 @@ public class AccountController : Controller
     private readonly AppDbContext _dbContext;
     private readonly IPasswordHasher<AppUser> _passwordHasher;
     private readonly IEmailQueue _emailQueue;
+    private readonly ILogger<AccountController> _logger;
 
     public AccountController(
         AppDbContext dbContext,
         IPasswordHasher<AppUser> passwordHasher,
-        IEmailQueue emailQueue)
+        IEmailQueue emailQueue,
+        ILogger<AccountController> logger)
     {
         _dbContext = dbContext;
         _passwordHasher = passwordHasher;
         _emailQueue = emailQueue;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -257,5 +260,10 @@ public class AccountController : Controller
             user.Email,
             "Confirm your registration",
             body));
+
+        _logger.LogInformation(
+            "Queued confirmation e-mail for user {UserId} to {Recipient}.",
+            user.Id,
+            user.Email);
     }
 }
