@@ -7,3 +7,4 @@ obj/
 *.db
 appsettings.Development.json
 node_modules/
+.codex/
