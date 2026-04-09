@@ -1,0 +1,58 @@
+@model Task4UserManager.ViewModels.Account.RegisterVm
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="auth-shell">
+    <div class="auth-card card shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+            <div class="auth-heading">
+                <p class="auth-kicker">Task 4</p>
+                <h1 class="h3 mb-2">Create account</h1>
+                <p class="text-secondary mb-0">Register to access the user management panel.</p>
+            </div>
+
+            <partial name="_StatusMessage" />
+
+            <form asp-action="Register" method="post" class="mt-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" autocomplete="name" />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" autocomplete="email" />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </form>
+
+            <div class="auth-links mt-4">
+                <span class="text-secondary">Already have an account?</span>
+                <a asp-action="Login">Sign in</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

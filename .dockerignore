@@ -1,0 +1,8 @@
+bin/
+obj/
+.git/
+.github/
+.vs/
+README.md
+**/.DS_Store
+**/Thumbs.db

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: task4-user-manager
+    runtime: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        sync: false
+      - key: Smtp__Host
+        value: smtp.gmail.com
+      - key: Smtp__Port
+        value: "587"
+      - key: Smtp__User
+        sync: false
+      - key: Smtp__Password
+        sync: false
+      - key: Smtp__FromName
+        value: Task4 App
+      - key: Smtp__FromEmail
+        sync: false

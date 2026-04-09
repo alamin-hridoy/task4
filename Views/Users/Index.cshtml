@@ -1,0 +1,108 @@
+@model Task4UserManager.ViewModels.Users.UsersIndexVm
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<section class="page-section">
+    <div class="page-header">
+        <div>
+            <p class="page-kicker">Administration</p>
+            <h1 class="h3 mb-2">User management</h1>
+            <p class="text-secondary mb-0">Manage active, blocked, and unverified users from a single table.</p>
+        </div>
+    </div>
+
+    <partial name="_StatusMessage" />
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="get" class="toolbar-grid mb-3">
+                <div class="toolbar-actions" role="toolbar" aria-label="Bulk actions">
+                    <button type="submit" form="bulkActionForm" name="operation" value="block" class="btn btn-outline-secondary bulk-action-btn" disabled>
+                        Block
+                    </button>
+                    <button type="submit" form="bulkActionForm" name="operation" value="unblock" class="btn btn-outline-secondary bulk-action-btn" disabled title="Unblock selected users">
+                        Unblock
+                    </button>
+                    <button type="submit" form="bulkActionForm" name="operation" value="delete" class="btn btn-outline-secondary bulk-action-btn" disabled title="Delete selected users">
+                        Delete
+                    </button>
+                    <button type="submit" form="bulkActionForm" name="operation" value="delete-unverified" class="btn btn-outline-secondary bulk-action-btn" disabled title="Delete only unverified users in the selection">
+                        Delete unverified
+                    </button>
+                </div>
+
+                <div class="toolbar-filter">
+                    <label for="filter" class="visually-hidden">Filter users</label>
+                    <input id="filter" name="filter" value="@Model.Filter" class="form-control" placeholder="Filter by name or e-mail" />
+                </div>
+            </form>
+
+            <form asp-action="BulkAction" method="post" id="bulkActionForm">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="filter" value="@Model.Filter" />
+
+                <div class="table-responsive">
+                    <table class="table align-middle user-table mb-0">
+                        <thead>
+                            <tr>
+                                <th class="select-col">
+                                    <input type="checkbox" id="selectAll" class="form-check-input" aria-label="Select all users" />
+                                </th>
+                                <th>Name</th>
+                                <th>E-mail</th>
+                                <th>Status</th>
+                                <th>Last seen</th>
+                                <th>Registered</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Users.Count == 0)
+                            {
+                                <tr>
+                                    <td colspan="6" class="text-center text-secondary py-5">No users found.</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var user in Model.Users)
+                                {
+                                    var badgeClass = user.Status switch
+                                    {
+                                        "Active" => "status-pill status-pill-active",
+                                        "Blocked" => "status-pill status-pill-blocked",
+                                        _ => "status-pill status-pill-unverified"
+                                    };
+
+                                    <tr>
+                                        <td class="select-col">
+                                            <input type="checkbox"
+                                                   class="form-check-input row-selector"
+                                                   name="selectedIds"
+                                                   value="@user.Id"
+                                                   aria-label="Select @user.Email" />
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold">@user.Name</div>
+                                        </td>
+                                        <td>@user.Email</td>
+                                        <td>
+                                            <span class="@badgeClass">@user.Status</span>
+                                        </td>
+                                        <td>@user.LastSeenText</td>
+                                        <td>@user.CreatedAtText</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="~/js/users.js" asp-append-version="true"></script>
+}
